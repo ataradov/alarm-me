@@ -140,8 +140,8 @@ public class AlarmNotification extends Activity
     notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
     intent = new Intent(this, AlarmMe.class);
-    intent.setAction("android.intent.action.MAIN");
-    intent.addCategory("android.intent.category.LAUNCHER");     
+//    intent.setAction(Intent.ACTION_MAIN);
+//    intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
     activity = PendingIntent.getActivity(this, (int)mAlarm.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
     notification.setLatestEventInfo(this, "Missed alarm: " + mAlarm.getTitle(), mDateTime.formatDetails(mAlarm), activity);

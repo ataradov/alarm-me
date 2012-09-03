@@ -19,15 +19,6 @@
 
 package com.taradov.alarmme;
 
-import java.io.IOException;
-import java.io.FileNotFoundException;
-import java.io.FileInputStream;
-import java.io.DataInputStream;
-import java.io.FileOutputStream;
-import java.io.DataOutputStream;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.Collections;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.view.View;
@@ -42,81 +33,32 @@ import android.widget.Toast;
 class AlarmListAdapter extends BaseAdapter
 {
   private Context mContext;
-  private static ArrayList<Alarm> mList;
+  private DataSource mDataSource;
   private LayoutInflater mInflater;
   private DateTime mDateTime;
-  private long mNextId;
   private int mColorOutdated;
   private int mColorActive;
   private AlarmManager mAlarmManager; 
 
-  private final String DATA_FILE_NAME = "alarmme.txt";
-  private final long MAGIC_NUMBER = 0x54617261646f7641L;
-
   public AlarmListAdapter(Context context)
   {
     mContext = context;
-    mList = new ArrayList<Alarm>();
+    mDataSource = DataSource.getInstance(context);
+
     mInflater = LayoutInflater.from(context);
     mDateTime = new DateTime(context);
-    mNextId = 1;
 
     mColorOutdated = mContext.getResources().getColor(R.color.alarm_title_outdated);
     mColorActive = mContext.getResources().getColor(R.color.alarm_title_active);
 
     mAlarmManager = (AlarmManager)context.getSystemService(mContext.ALARM_SERVICE);
 
-    load();
+    dataSetChanged();
   }
 
   public void save()
   {
-    try
-    {
-      DataOutputStream dos = new DataOutputStream(mContext.openFileOutput(DATA_FILE_NAME, Context.MODE_PRIVATE));
-
-      dos.writeLong(MAGIC_NUMBER);
-      dos.writeLong(mNextId);
-      dos.writeInt(mList.size());
-
-      for (int i = 0; i < mList.size(); i++)
-        mList.get(i).serialize(dos);
-
-      dos.close();
-    } catch (IOException e)
-    {
-    }
-  }
-
-  public void load()
-  {
-    mList.clear();
-
-    try
-    {
-      DataInputStream dis = new DataInputStream(mContext.openFileInput(DATA_FILE_NAME));
-      long magic = dis.readLong();
-      int size;
-
-      if (MAGIC_NUMBER == magic)
-      {
-        mNextId = dis.readLong();
-        size = dis.readInt();
-
-        for (int i = 0; i < size; i++)
-        {
-          Alarm alarm = new Alarm(mContext);
-          alarm.deserialize(dis);
-          mList.add(alarm);
-        }
-      }
-
-      dis.close();
-    } catch (IOException e)
-    {
-    }
-
-    dataSetChanged();
+    mDataSource.save();
   }
 
   public void update(Alarm alarm)
@@ -126,22 +68,21 @@ class AlarmListAdapter extends BaseAdapter
 
   public void updateAlarms()
   {
-    for (int i = 0; i < mList.size(); i++)
-      mList.get(i).update();
+    for (int i = 0; i < mDataSource.size(); i++)
+      mDataSource.get(i).update();
     dataSetChanged();
   }
 
   public void add(Alarm alarm)
   {
-    alarm.setId(mNextId++);
-    mList.add(alarm);
+    mDataSource.add(alarm);
     dataSetChanged();
   }
 
   public void delete(int index)
   {
-    cancelAlarm(mList.get(index));
-    mList.remove(index);
+    cancelAlarm(mDataSource.get(index));
+    mDataSource.remove(index);
     dataSetChanged();
   }
 
@@ -153,12 +94,12 @@ class AlarmListAdapter extends BaseAdapter
 
   public int getCount()
   {
-    return mList.size();
+    return mDataSource.size();
   }
 
   public Alarm getItem(int position)
   {
-    return mList.get(position);
+    return mDataSource.get(position);
   }
 
   public long getItemId(int position)
@@ -169,7 +110,7 @@ class AlarmListAdapter extends BaseAdapter
   public View getView(int position, View convertView, ViewGroup parent)
   {
     ViewHolder holder;
-    Alarm alarm = mList.get(position);
+    Alarm alarm = mDataSource.get(position);
 
     if (convertView == null)
     {
@@ -199,16 +140,16 @@ class AlarmListAdapter extends BaseAdapter
 
   private void dataSetChanged()
   {
-    Collections.sort(mList);
+    mDataSource.sort();
     startSystemAlarms();
     notifyDataSetChanged();
   }
 
   private void startSystemAlarms()
   {
-    for (int i = 0; i < mList.size(); i++)
+    for (int i = 0; i < mDataSource.size(); i++)
     {
-      Alarm alarm = mList.get(i);
+      Alarm alarm = mDataSource.get(i);
 
       if (alarm.getEnabled() && !alarm.getOutdated())
         setAlarm(alarm);
