@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:padding="4dip"
+  android:background="@color/white"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+
+  <TextView
+    android:id="@+id/alarm_title_text"
+    android:layout_weight="2"
+    android:layout_width="fill_parent"
+    android:layout_height="0sp"
+    android:gravity="center"
+    android:padding="8dip"
+    android:textColor="@color/blue"
+    android:textSize="32dip"
+    android:textStyle="bold"
+    android:text="..." />
+
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:padding="8dip"
+    android:layout_weight="1"
+    android:layout_width="fill_parent"
+    android:layout_height="0sp">
+
+    <View
+      android:layout_weight="1"
+      android:layout_width="0sp"
+      android:layout_height="wrap_content" />
+
+    <Button
+      android:id="@+id/dismiss_alarm"
+      android:layout_weight="2"
+      android:layout_width="0sp"
+      android:layout_height="wrap_content"
+      android:text="Dismiss"
+      android:onClick="onDismissClick" />
+
+    <View
+      android:layout_weight="1"
+      android:layout_width="0sp"
+      android:layout_height="wrap_content" />
+
+  </LinearLayout>
+
+</LinearLayout>
+

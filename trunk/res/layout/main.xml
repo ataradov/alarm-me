@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:paddingTop="4sp"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+
+  <Button
+    style="@style/widget"
+    android:id="@+id/add_alarm"
+    android:text="Add alarm"
+    android:onClick="onAddAlarmClick" />
+
+  <ListView
+    style="@style/widget"
+    android:id="@+id/alarm_list" />
+
+</LinearLayout>
+
