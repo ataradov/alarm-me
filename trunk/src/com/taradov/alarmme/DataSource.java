@@ -28,10 +28,13 @@ import java.io.DataOutputStream;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
+import android.util.Log;
 import android.content.Context;
 
 public class DataSource
 {
+  private static final String TAG = "AlarmMe";
+
   private static final DataSource mDataSource = new DataSource();
   private static Context mContext = null;
   private static ArrayList<Alarm> mList = null;
@@ -56,6 +59,8 @@ public class DataSource
 
   private static void load()
   {
+    Log.i(TAG, "DataSource.load()");
+
     mList = new ArrayList<Alarm>();
     mNextId = 1;
 
@@ -84,8 +89,10 @@ public class DataSource
     }
   }
 
-  public void save()
+  public static void save()
   {
+    Log.i(TAG, "DataSource.save()");
+
     try
     {
       DataOutputStream dos = new DataOutputStream(mContext.openFileOutput(DATA_FILE_NAME, Context.MODE_PRIVATE));
@@ -103,31 +110,32 @@ public class DataSource
     }
   }
 
-  public int size()
+  public static int size()
   {
     return mList.size();
   }
 
-  public Alarm get(int position)
+  public static Alarm get(int position)
   {
     return mList.get(position);
   }
 
-  public void add(Alarm alarm)
+  public static void add(Alarm alarm)
   {
     alarm.setId(mNextId++);
     mList.add(alarm);
+    Collections.sort(mList);
   }
 
-  public void remove(int index)
+  public static void remove(int index)
   {
     mList.remove(index);
   }
 
-  public void sort()
+  public static void update(Alarm alarm)
   {
+    alarm.update();
     Collections.sort(mList);
   }
-
 }
 

@@ -21,6 +21,7 @@ package com.taradov.alarmme;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
@@ -32,6 +33,8 @@ import android.widget.Toast;
 
 class AlarmListAdapter extends BaseAdapter
 {
+  private final String TAG = "AlarmMe";
+
   private Context mContext;
   private DataSource mDataSource;
   private LayoutInflater mInflater;
@@ -44,6 +47,8 @@ class AlarmListAdapter extends BaseAdapter
   {
     mContext = context;
     mDataSource = DataSource.getInstance(context);
+
+    Log.i(TAG, "AlarmListAdapter.create()");
 
     mInflater = LayoutInflater.from(context);
     mDateTime = new DateTime(context);
@@ -63,13 +68,14 @@ class AlarmListAdapter extends BaseAdapter
 
   public void update(Alarm alarm)
   {
+    mDataSource.update(alarm);
     dataSetChanged();
   }
 
   public void updateAlarms()
   {
     for (int i = 0; i < mDataSource.size(); i++)
-      mDataSource.get(i).update();
+      mDataSource.update(mDataSource.get(i));
     dataSetChanged();
   }
 
@@ -140,20 +146,10 @@ class AlarmListAdapter extends BaseAdapter
 
   private void dataSetChanged()
   {
-    mDataSource.sort();
-    startSystemAlarms();
-    notifyDataSetChanged();
-  }
-
-  private void startSystemAlarms()
-  {
     for (int i = 0; i < mDataSource.size(); i++)
-    {
-      Alarm alarm = mDataSource.get(i);
+      setAlarm(mDataSource.get(i));
 
-      if (alarm.getEnabled() && !alarm.getOutdated())
-        setAlarm(alarm);
-    }
+    notifyDataSetChanged();
   }
 
   private void setAlarm(Alarm alarm)
@@ -161,10 +157,14 @@ class AlarmListAdapter extends BaseAdapter
     PendingIntent sender;
     Intent intent;
 
-    intent = new Intent(mContext, AlarmReceiver.class);
-    alarm.toIntent(intent);
-    sender = PendingIntent.getBroadcast(mContext, (int)alarm.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    mAlarmManager.set(AlarmManager.RTC_WAKEUP, alarm.getDate(), sender);
+    if (alarm.getEnabled() && !alarm.getOutdated())
+    {
+      intent = new Intent(mContext, AlarmReceiver.class);
+      alarm.toIntent(intent);
+      sender = PendingIntent.getBroadcast(mContext, (int)alarm.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+      mAlarmManager.set(AlarmManager.RTC_WAKEUP, alarm.getDate(), sender);
+      Log.i(TAG, "AlarmListAdapter.setAlarm(" + alarm.getId() + ", '" + alarm.getTitle() + "', " + alarm.getDate()+")");
+    }
   }
 
   private void cancelAlarm(Alarm alarm)

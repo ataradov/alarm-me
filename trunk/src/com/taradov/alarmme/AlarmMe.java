@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,11 +47,15 @@ import com.taradov.alarmme.AlarmReceiver;
 import com.taradov.alarmme.AlarmListAdapter;
 import com.taradov.alarmme.About;
 
-//import android.util.Log;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+
 //  Toast.makeText(getApplicationContext(), "Delete" + index, Toast.LENGTH_SHORT).show();
 
 public class AlarmMe extends Activity
 {
+  private final String TAG = "AlarmMe";
+
   private ListView mAlarmList;
   private AlarmListAdapter mAlarmListAdapter;
   private Alarm mCurrentAlarm;
@@ -70,6 +75,8 @@ public class AlarmMe extends Activity
     super.onCreate(bundle);
     setContentView(R.layout.main);
 
+    Log.i(TAG, "AlarmMe.onCreate()");
+
     mAlarmList = (ListView)findViewById(R.id.alarm_list);
 
     mAlarmListAdapter = new AlarmListAdapter(this);
@@ -84,6 +91,7 @@ public class AlarmMe extends Activity
   public void onDestroy()
   {
     super.onDestroy();
+    Log.i(TAG, "AlarmMe.onDestroy()");
     mAlarmListAdapter.save();
   }
 
@@ -91,6 +99,7 @@ public class AlarmMe extends Activity
   public void onResume()
   {
     super.onResume();
+    Log.i(TAG, "AlarmMe.onResume()");
     mAlarmListAdapter.updateAlarms();
   }
 
@@ -102,14 +111,6 @@ public class AlarmMe extends Activity
     mCurrentAlarm.toIntent(intent);
 
     AlarmMe.this.startActivityForResult(intent, NEW_ALARM_ACTIVITY);
-
-/*
-    Intent intent = new Intent(getBaseContext(), AlarmNotification.class);
-    Alarm alarm = new Alarm(this);
-    alarm.setTitle("Test alarm text. This text is way too long.");
-    alarm.toIntent(intent);
-    startActivityForResult(intent, 5555);
-*/
   }
 
   @Override

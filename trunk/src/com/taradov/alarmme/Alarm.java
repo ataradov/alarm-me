@@ -42,7 +42,6 @@ public class Alarm implements Comparable<Alarm>
   private int mOccurence;
   private int mDays;
   private long mNextOccurence;
-  private boolean mOutdated;
 
   public static final int ONCE = 0;
   public static final int WEEKLY = 1;
@@ -132,7 +131,7 @@ public class Alarm implements Comparable<Alarm>
 
   public boolean getOutdated()
   {
-    return mOutdated;
+    return mNextOccurence < System.currentTimeMillis();
   }
 
   public int compareTo(Alarm aThat)
@@ -189,12 +188,12 @@ public class Alarm implements Comparable<Alarm>
       mNextOccurence = mDate;
     }
 
-    mOutdated = (mNextOccurence < now.getTimeInMillis());
     mDate = mNextOccurence;
   }
 
   public void toIntent(Intent intent)
   {
+    intent.putExtra("com.taradov.alarmme.id", mId);
     intent.putExtra("com.taradov.alarmme.title", mTitle);
     intent.putExtra("com.taradov.alarmme.date", mDate);
     intent.putExtra("com.taradov.alarmme.alarm", mEnabled);
@@ -204,6 +203,7 @@ public class Alarm implements Comparable<Alarm>
 
   public void fromIntent(Intent intent)
   {
+    mId = intent.getLongExtra("com.taradov.alarmme.id", 0);
     mTitle = intent.getStringExtra("com.taradov.alarmme.title");
     mDate = intent.getLongExtra("com.taradov.alarmme.date", 0);
     mEnabled = intent.getBooleanExtra("com.taradov.alarmme.alarm", true);
