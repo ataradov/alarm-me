@@ -125,17 +125,20 @@ public class DataSource
     alarm.setId(mNextId++);
     mList.add(alarm);
     Collections.sort(mList);
+    save();
   }
 
   public static void remove(int index)
   {
     mList.remove(index);
+    save();
   }
 
   public static void update(Alarm alarm)
   {
     alarm.update();
     Collections.sort(mList);
+    save();
   }
 }
 

@@ -92,7 +92,7 @@ public class AlarmMe extends Activity
   {
     super.onDestroy();
     Log.i(TAG, "AlarmMe.onDestroy()");
-    mAlarmListAdapter.save();
+//    mAlarmListAdapter.save();
   }
 
   @Override

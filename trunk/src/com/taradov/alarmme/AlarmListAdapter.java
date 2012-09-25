@@ -74,6 +74,7 @@ class AlarmListAdapter extends BaseAdapter
 
   public void updateAlarms()
   {
+    Log.i(TAG, "AlarmListAdapter.updateAlarms()");
     for (int i = 0; i < mDataSource.size(); i++)
       mDataSource.update(mDataSource.get(i));
     dataSetChanged();
