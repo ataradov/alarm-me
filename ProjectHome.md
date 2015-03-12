@@ -1,0 +1,1 @@
+Simple reminder application for Android
