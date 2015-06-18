@@ -6,8 +6,9 @@ substantial interest for specific feature, I'll consider adding it.
 
 # Distribution
 AlarmMe is a free and open source project distributed under GPLv3 licence.
-AlarmMe is also available to install from [Google Play](https://play.google.com/store/apps/details?id=com.taradov.alarmme).
-And here is QR code, just scan it with your phone and it will take you right into Google Play search results.
+AlarmMe is also available for installation from [Google Play](https://play.google.com/store/apps/details?id=com.taradov.alarmme).
+And here is QR code, just scan it with your phone and it will take you right into the Google Play search results.
+
 ![QR code for Google Play link](https://raw.githubusercontent.com/ataradov/alarm-me/master/doc/qrcode.png)
 
 # Screenshots
