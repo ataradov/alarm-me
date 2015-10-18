@@ -1,6 +1,6 @@
 /**************************************************************************
  *
- * Copyright (C) 2012 Alex Taradov <taradov@gmail.com>
+ * Copyright (C) 2012-2015 Alex Taradov <alex@taradov.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
+import android.support.v4.app.NotificationCompat;
 
 public class AlarmNotification extends Activity
 {
@@ -154,17 +155,22 @@ public class AlarmNotification extends Activity
 
     Log.i(TAG, "AlarmNotification.addNotification(" + alarm.getId() + ", '" + alarm.getTitle() + "', '" + mDateTime.formatDetails(alarm) + "')");
 
-    notification = new Notification(R.drawable.ic_notification, "Missed alarm", System.currentTimeMillis());
-    notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
     intent = new Intent(this.getApplicationContext(), AlarmMe.class);
     intent.setAction(Intent.ACTION_MAIN);
     intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
     activity = PendingIntent.getActivity(this, (int)alarm.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    notification.setLatestEventInfo(this, "Missed alarm: " + alarm.getTitle(), mDateTime.formatDetails(alarm), activity);
 
-    notificationManager.notify((int)alarm.getId(), notification);            
+    NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+    notification = builder
+        .setContentIntent(activity)
+        .setSmallIcon(R.drawable.ic_notification)
+        .setAutoCancel(true)
+        .setContentTitle("Missed alarm: " + alarm.getTitle())
+        .setContentText(mDateTime.formatDetails(alarm))
+        .build();
+
+    notificationManager.notify((int)alarm.getId(), notification);
   }
 
   @Override

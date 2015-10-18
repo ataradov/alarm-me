@@ -1,6 +1,6 @@
 /**************************************************************************
  *
- * Copyright (C) 2012 Alex Taradov <taradov@gmail.com>
+ * Copyright (C) 2012-2015 Alex Taradov <alex@taradov.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
