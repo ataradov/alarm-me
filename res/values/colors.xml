@@ -9,7 +9,7 @@
   <color name="grey">#888888</color>
   <color name="dark_grey">#555555</color>
 
-  <color name="alarm_title_active">#dddddd</color>
+  <color name="alarm_title_active">#444444</color>
   <color name="alarm_title_outdated">#888888</color>
   <color name="alarm_details">#888888</color>
 

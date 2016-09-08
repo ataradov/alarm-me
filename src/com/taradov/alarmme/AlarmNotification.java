@@ -29,6 +29,7 @@ import android.net.Uri;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.Notification.Builder;
 import android.app.PendingIntent;
 import android.util.Log;
 import android.view.WindowManager;
@@ -58,7 +59,6 @@ public class AlarmNotification extends Activity
   private DateTime mDateTime;
   private TextView mTextView;
   private PlayTimerTask mTimerTask;
-
 
   @Override
   protected void onCreate(Bundle bundle)

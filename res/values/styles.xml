@@ -16,7 +16,7 @@
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
   </style>
-
+<!--
   <style name="dark">
     <item name="android:background">#444444</item>
   </style>
@@ -24,6 +24,6 @@
   <style name="dark1">
     <item name="android:background">@android:drawable/title_bar</item>
   </style>
-
+-->
 </resources>
 
