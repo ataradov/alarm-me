@@ -20,7 +20,7 @@
     android:layout_gravity="center"
     android:paddingTop="16dip"
     android:textSize="16dip"
-    android:text="Version 0.1.9" />
+    android:text="Version 0.1.10" />
 
   <TextView
     android:layout_width="wrap_content"
@@ -28,7 +28,7 @@
     android:layout_gravity="center"
     android:paddingTop="16dip"
     android:textSize="20dip"
-    android:text="Copyright \u00a9 2012-2016 Alex Taradov" />
+    android:text="Copyright \u00a9 2012-2017 Alex Taradov" />
 
   <TextView
     android:layout_width="wrap_content"
