@@ -140,5 +140,10 @@ public class DataSource
     Collections.sort(mList);
     save();
   }
+
+  public static long getNextId()
+  {
+    return mNextId;
+  }
 }
 
