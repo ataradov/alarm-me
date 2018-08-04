@@ -29,6 +29,7 @@ import android.net.Uri;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.NotificationChannel;
 import android.app.Notification.Builder;
 import android.app.PendingIntent;
 import android.util.Log;
@@ -161,14 +162,19 @@ public class AlarmNotification extends Activity
 
     activity = PendingIntent.getActivity(this, (int)alarm.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-    NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-    notification = builder
+    NotificationChannel channel = new NotificationChannel("alarmme_01", "AlarmMe Notifications",
+        NotificationManager.IMPORTANCE_DEFAULT);
+
+    notification = new Notification.Builder(this)
         .setContentIntent(activity)
         .setSmallIcon(R.drawable.ic_notification)
         .setAutoCancel(true)
         .setContentTitle("Missed alarm: " + alarm.getTitle())
         .setContentText(mDateTime.formatDetails(alarm))
+        .setChannelId("alarmme_01")
         .build();
+
+    notificationManager.createNotificationChannel(channel);
 
     notificationManager.notify((int)alarm.getId(), notification);
   }
